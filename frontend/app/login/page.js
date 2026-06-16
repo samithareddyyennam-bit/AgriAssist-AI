@@ -1,13 +1,22 @@
+import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
+
 export default function Login() {
   return (
-    <div className="p-10">
-      <h1 className="text-4xl font-bold text-green-700">
-        Login Page
-      </h1>
+    <div>
+      <Navbar />
 
-      <p className="mt-4 text-lg">
-        Sign in to access AgriAssist AI features.
-      </p>
+      <main className="p-10 min-h-screen bg-black text-white">
+        <h1 className="text-4xl font-bold text-green-700">
+          Login
+        </h1>
+
+        <p className="mt-4 text-lg">
+          Login to access your personalized farming dashboard.
+        </p>
+      </main>
+
+      <Footer />
     </div>
   );
 }
