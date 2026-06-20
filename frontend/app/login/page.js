@@ -1,22 +1,32 @@
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
+import Input from "../../components/ui/Input";
 
 export default function Login() {
   return (
-    <div>
+    <>
       <Navbar />
 
-      <main className="p-10 min-h-screen bg-black text-white">
-        <h1 className="text-4xl font-bold text-green-700">
+      <div className="p-10 max-w-md mx-auto min-h-screen">
+        <h1 className="text-3xl font-bold mb-6">
           Login
         </h1>
 
-        <p className="mt-4 text-lg">
-          Login to access your personalized farming dashboard.
-        </p>
-      </main>
+        <Input
+          label="Email"
+          placeholder="Enter your email"
+        />
+
+        <div className="mt-4">
+          <Input
+            label="Password"
+            type="password"
+            placeholder="Enter password"
+          />
+        </div>
+      </div>
 
       <Footer />
-    </div>
+    </>
   );
 }

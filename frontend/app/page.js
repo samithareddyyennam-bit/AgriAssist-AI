@@ -2,11 +2,14 @@ import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
 import Card from "../components/Card";
 import Footer from "../components/Footer";
+import Button from "../components/ui/Button";
+import ThemeToggle from "../components/ui/ThemeToggle";
 
 export default function Home() {
   return (
     <div>
       <Navbar />
+      <ThemeToggle />
       <Hero />
 
       <section className="bg-gray-100 py-12">
