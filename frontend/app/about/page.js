@@ -1,46 +1,48 @@
-"use client";
-
-import { useState } from "react";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
-import Modal from "../../components/ui/Modal";
-import Toast from "../../components/ui/Toast";
 
 export default function About() {
-  const [open, setOpen] = useState(false);
-
   return (
     <>
       <Navbar />
 
-      <div className="p-10 min-h-screen">
-        <h1 className="text-4xl font-bold text-green-700">
+      {/* Banner Section */}
+      <div
+        className="h-80 bg-cover bg-center flex items-center justify-center relative"
+        style={{
+          backgroundImage: "url('/images/about.jpg')",
+        }}
+      >
+        <div className="absolute inset-0 bg-black/50"></div>
+
+        <h1 className="relative z-10 text-5xl font-bold text-white text-center">
           About AgriAssist AI
         </h1>
+      </div>
 
-        <p className="mt-4">
-          AgriAssist AI helps farmers with smart agricultural solutions.
+      {/* Content Section */}
+      <div className="max-w-5xl mx-auto px-6 py-12">
+        <h2 className="text-3xl font-bold text-green-700 mb-4">
+          Our Mission
+        </h2>
+
+        <p className="text-lg text-gray-700 dark:text-gray-300 mb-8">
+          AgriAssist AI is a smart farming platform designed to help farmers
+          make better agricultural decisions using Artificial Intelligence.
+          Our goal is to improve crop productivity, reduce losses, and support
+          sustainable farming practices.
         </p>
 
-        <button
-          onClick={() => setOpen(true)}
-          className="mt-6 bg-green-700 text-white px-4 py-2 rounded"
-        >
-          Open Modal
-        </button>
+        <h2 className="text-3xl font-bold text-green-700 mb-4">
+          Key Features
+        </h2>
 
-        <Modal
-          isOpen={open}
-          onClose={() => setOpen(false)}
-          title="About AgriAssist AI"
-        >
-          <div className="mt-4">
-            <Toast/>
-          </div>
-          <p>
-            This modal demonstrates the reusable Modal component.
-          </p>
-        </Modal>
+        <ul className="list-disc pl-6 text-lg text-gray-700 dark:text-gray-300 space-y-2">
+          <li>AI-powered crop recommendations</li>
+          <li>Real-time weather monitoring</li>
+          <li>Plant disease detection using AI</li>
+          <li>Smart farming insights and guidance</li>
+        </ul>
       </div>
 
       <Footer />
