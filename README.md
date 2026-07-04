@@ -6,34 +6,41 @@ AgriAssist AI is an AI-powered smart farming web application designed to help fa
 
 ## 🚀 Features
 
-* 🌾 AI Crop Recommendation
-* 🌤 Weather Forecast
-* 🦠 Disease Detection
-* 📊 Interactive Dashboard
-* 🌱 Smart Farming Tips
-* 🌙 Dark Mode Support
-* ⚡ Responsive Design
-* 🔔 Toast Notifications
-* 📞 Contact Page
+- 🌾 AI Crop Recommendation
+- 🌤 Real-time Weather Forecast
+- 🦠 Disease Detection
+- 📊 Interactive Dashboard
+- 🌱 Smart Farming Tips
+- 🔍 Search Crops
+- ➕ Add New Crops
+- ✏ Update Crop Information
+- 🗑 Delete Crop Records
+- 💾 Persistent Database Storage using Supabase
+- 🌙 Dark Mode Support
+- ⚡ Responsive Design
+- 🔔 Toast Notifications
+- 📞 Contact Page
+
 
 ---
 
 ## 🛠 Technologies Used
 
-### Frontend
+## Frontend
+- HTML5
+- CSS3
+- JavaScript
 
-* Next.js
-* React.js
-* Tailwind CSS
-* React Hot Toast
+## Backend
+- Node.js
+- Express.js
 
-### Backend
+## Database
+- PostgreSQL
+- Supabase
 
-* Node.js
-* Express.js
-* REST API
-* CORS
-* Dotenv
+## APIs
+- OpenWeather API
 
 ---
 
@@ -49,9 +56,17 @@ AgriAssist-AI
 │   └── package.json
 │
 ├── backend
+│   ├── config
+│   │   └── db.js
 │   ├── routes
+│   │   ├── cropRoutes.js
+│   │   ├── weatherRoutes.js
+│   │   ├── diseaseRoutes.js
+│   │   └── authRoutes.js
 │   ├── server.js
-│   └── package.json
+│   ├── package.json
+│   ├── .env
+│   └── .env.example
 │
 └── README.md
 ```
@@ -63,7 +78,7 @@ AgriAssist-AI
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/AgriAssist-AI.git
+
 ```
 
 ### Backend
@@ -84,6 +99,21 @@ npm run dev
 
 ---
 
+# 🔐 Environment Variables
+
+Create a `.env` file inside the backend folder.
+
+```
+PORT=5000
+
+DATABASE_URL=your_supabase_database_url
+
+WEATHER_API_KEY=your_weather_api_key
+```
+
+Create a `.env.example` file with placeholder values before pushing your project to GitHub.
+
+
 ## 🌐 Local URLs
 
 Frontend
@@ -102,23 +132,66 @@ http://localhost:5000
 
 ## 📷 Screenshots
 
-* Home Page
-* Dashboard
-* Crop Recommendation
-* Weather Page
-* Disease Detection
-* Contact Page
+- 🏠 Home Page
+- 📊 Dashboard
+- 🌾 Crop Recommendation
+- 🌤 Weather Page
+- 🦠 Disease Detection
+- ➕ Add Crop
+- ✏ Update Crop
+- 🗑 Delete Crop
+
 
 (Add screenshots after uploading them.)
 
 ---
 
+# 🗄 Database
+
+This project uses **PostgreSQL** hosted on **Supabase**.
+
+### Why Supabase?
+
+- Free cloud PostgreSQL database
+- Reliable and secure
+- Persistent cloud storage
+- Easy integration with Node.js
+- Supports full CRUD operations
+
+# 📊 Database Schema
+
+### Table: `crops`
+
+| Column | Type | Description |
+|---------|------|-------------|
+| id | Integer (Primary Key) | Crop ID |
+| name | Text | Crop Name |
+| soil | Text | Soil Type |
+| season | Text | Growing Season |
+| water | Text | Water Requirement |
+| fertilizer | Text | Recommended Fertilizer |
+![Database Schema](images/schema.png)
+
+# 🔄 CRUD Operations
+
+The application supports complete CRUD operations.
+
+- ✅ Create – Add new crops
+- ✅ Read – Display crop information
+- ✅ Update – Modify crop details
+- ✅ Delete – Remove crop records
+
+All data is stored permanently in the Supabase PostgreSQL database.
+
+
 ## 👩‍💻 Developer
 
 **Samitha Reddy**
+AI-Assisted Full Stack Web Development Intern
 
 ---
 
 ## 📄 License
 
 This project is developed for educational and internship purposes.
+

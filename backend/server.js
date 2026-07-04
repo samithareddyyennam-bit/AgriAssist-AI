@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
+
 const cropRoutes = require("./routes/cropRoutes");
 const weatherRoutes = require("./routes/weatherRoutes");
 const diseaseRoutes = require("./routes/diseaseRoutes");
@@ -12,6 +13,8 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Routes
 app.use("/api/crops", cropRoutes);
 app.use("/api/weather", weatherRoutes);
 app.use("/api/diseases", diseaseRoutes);
@@ -19,17 +22,18 @@ app.use("/api/auth", authRoutes);
 
 // Home Route
 app.get("/", (req, res) => {
-res.send("Welcome to AgriAssist AI Backend 🌱");
+  res.send("Welcome to AgriAssist AI Backend 🌱");
 });
 
 // Test API
 app.get("/api", (req, res) => {
-res.json({
-success: true,
-message: "Backend is running successfully!"
-});
+  res.json({
+    success: true,
+    message: "Backend is running successfully!",
+  });
 });
 
+// Error Handling Middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
 
@@ -41,5 +45,5 @@ app.use((err, req, res, next) => {
 
 // Start Server
 app.listen(PORT, () => {
-console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
