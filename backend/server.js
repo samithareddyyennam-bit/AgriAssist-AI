@@ -6,6 +6,7 @@ const cropRoutes = require("./routes/cropRoutes");
 const weatherRoutes = require("./routes/weatherRoutes");
 const diseaseRoutes = require("./routes/diseaseRoutes");
 const authRoutes = require("./routes/authRoutes");
+const aiRoutes = require("./routes/aiRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -19,6 +20,7 @@ app.use("/api/crops", cropRoutes);
 app.use("/api/weather", weatherRoutes);
 app.use("/api/diseases", diseaseRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/ai", aiRoutes);
 
 // Home Route
 app.get("/", (req, res) => {
