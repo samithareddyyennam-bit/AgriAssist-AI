@@ -19,13 +19,15 @@ router.get("/", async (req, res) => {
     );
 
     res.json({
-      city: response.data.name,
-      temperature: response.data.main.temp,
-      humidity: response.data.main.humidity,
-      weather: response.data.weather[0].main,
-      description: response.data.weather[0].description,
-      wind: response.data.wind.speed
-    });
+  city: response.data.name,
+  temperature: response.data.main.temp,
+  humidity: response.data.main.humidity,
+  weather: response.data.weather[0].main,
+
+  crop: "Rice",
+  soil: "Loamy Soil",
+  season: "Kharif"
+});
 
  } catch (error) {
   console.log(error.response?.data || error.message);

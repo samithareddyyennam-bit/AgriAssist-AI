@@ -1,95 +1,112 @@
 "use client";
 
-import { useState } from "react";
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
-export default function Disease() {
-  const [image, setImage] = useState(null);
-  const [result, setResult] = useState(null);
+export default function DiseasePage() {
+  const [diseases, setDiseases] = useState([]);
+  const [filteredDiseases, setFilteredDiseases] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
 
-  const detectDisease = () => {
-    if (!image) {
-      alert("Please upload an image.");
-      return;
+  const fetchDiseases = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/api/diseases");
+      const data = await res.json();
+
+      setDiseases(data);
+      setFilteredDiseases(data);
+      setLoading(false);
+    } catch (err) {
+      toast.error("Unable to fetch diseases");
+      setLoading(false);
     }
-
-    // Dummy AI Prediction
-    setResult({
-      disease: "Leaf Blight",
-      confidence: "96%",
-      treatment: "Spray Copper Oxychloride every 7 days and remove infected leaves.",
-    });
   };
 
+  useEffect(() => {
+    fetchDiseases();
+  }, []);
+
+  useEffect(() => {
+    const result = diseases.filter((item) =>
+      item.crop.toLowerCase().includes(search.toLowerCase())
+    );
+
+    setFilteredDiseases(result);
+  }, [search, diseases]);
+
+  if (loading) {
+    return (
+      <div className="h-screen flex justify-center items-center text-3xl">
+        Loading Diseases...
+      </div>
+    );
+  }
+
   return (
-    <>
-      <Navbar />
+    <div className="min-h-screen bg-red-50 p-10">
 
-      <div className="min-h-screen bg-gradient-to-br from-green-50 to-green-100 p-10">
+      <h1 className="text-4xl font-bold text-center text-red-700 mb-8">
+        🌿 Crop Disease Detection
+      </h1>
 
-        <h1 className="text-5xl font-bold text-center text-green-700 mb-10">
-          🦠 AI Disease Detection
-        </h1>
+      <div className="max-w-xl mx-auto mb-10">
 
-        <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl p-8">
-
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => {
-              setImage(URL.createObjectURL(e.target.files[0]));
-              setResult(null);
-            }}
-            className="w-full border rounded-lg p-3"
-          />
-
-          {image && (
-            <img
-              src={image}
-              alt="Crop"
-              className="mt-6 rounded-xl h-72 w-full object-cover"
-            />
-          )}
-
-          <button
-            onClick={detectDisease}
-            className="mt-6 w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl"
-          >
-            Detect Disease
-          </button>
-
-          {result && (
-            <div className="mt-8 bg-green-100 rounded-xl p-6">
-
-              <h2 className="text-2xl font-bold text-green-700 mb-4">
-                AI Prediction
-              </h2>
-
-              <p className="text-lg">
-                <strong>🦠 Disease:</strong> {result.disease}
-              </p>
-
-              <p className="text-lg mt-2">
-                <strong>📊 Confidence:</strong> {result.confidence}
-              </p>
-
-              <p className="text-lg mt-2">
-                <strong>💊 Treatment:</strong>
-              </p>
-
-              <p className="mt-2">
-                {result.treatment}
-              </p>
-
-            </div>
-          )}
-
-        </div>
+        <input
+          type="text"
+          placeholder="Search crop..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-full border rounded-lg p-4 shadow"
+        />
 
       </div>
 
-      <Footer />
-    </>
+      {filteredDiseases.length === 0 ? (
+
+        <div className="bg-white rounded-xl shadow p-10 text-center">
+
+          <h2 className="text-2xl font-bold">
+            No Disease Found
+          </h2>
+
+        </div>
+
+      ) : (
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-6">
+
+          {filteredDiseases.map((item) => (
+
+            <div
+              key={item.id}
+              className="bg-white rounded-xl shadow p-6"
+            >
+
+              <h2 className="text-2xl font-bold text-red-700">
+                🌾 {item.crop}
+              </h2>
+
+              <p className="mt-4">
+                <strong>Disease:</strong> {item.disease}
+              </p>
+
+              <p className="mt-2">
+                <strong>Symptoms:</strong> {item.symptoms}
+              </p>
+
+              <p className="mt-2">
+                <strong>Prevention:</strong> {item.prevention}
+              </p>
+
+            </div>
+
+          ))}
+
+        </div>
+
+      )}
+
+    </div>
   );
 }
