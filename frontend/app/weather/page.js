@@ -16,7 +16,7 @@ export default function WeatherPage() {
       const city = "Hyderabad";
 
       const res = await fetch(
-        `http://localhost:5000/api/weather?city=${city}`
+        `${process.env.NEXT_PUBLIC_API_URL}/api/weather?city=Hyderabad`
       );
 
       const data = await res.json();

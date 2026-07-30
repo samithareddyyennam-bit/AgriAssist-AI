@@ -10,7 +10,7 @@ export default function RecommendPage() {
   const handleSearch = async () => {
     try {
       const res = await fetch(
-        `http://localhost:5000/api/crops/recommend?soil=${encodeURIComponent(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/crops/recommend?soil=${encodeURIComponent(
           soil
         )}&season=${encodeURIComponent(season)}`
       );

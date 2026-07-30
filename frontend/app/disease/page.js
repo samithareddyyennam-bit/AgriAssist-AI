@@ -11,7 +11,7 @@ export default function DiseasePage() {
 
   const fetchDiseases = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/diseases");
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/diseases`);
       const data = await res.json();
 
       setDiseases(data);

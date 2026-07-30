@@ -10,7 +10,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (session) {
-      fetch("http://localhost:5000/api/dashboard")
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/dashboard`)
         .then((res) => res.json())
         .then((data) => setDashboard(data));
     }

@@ -12,7 +12,7 @@ export default function AIPage() {
     setLoading(true);
 
     const response = await fetch(
-      "http://localhost:5000/api/ai/crop-advice",
+      `${process.env.NEXT_PUBLIC_API_URL}/api/ai`,
       {
         method: "POST",
         headers: {
