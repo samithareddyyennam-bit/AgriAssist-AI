@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
 console.log("SECRET EXISTS:", !!process.env.NEXTAUTH_SECRET);
+console.log("URL:", process.env.NEXTAUTH_URL);
 
 const handler = NextAuth({
   providers: [
