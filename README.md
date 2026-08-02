@@ -183,6 +183,28 @@ The application supports complete CRUD operations.
 
 All data is stored permanently in the Supabase PostgreSQL database.
 
+## Live Deployment
+
+Frontend:
+https://agri-assist-ai-self.vercel.app
+
+Backend:
+https://agriassist-ai-t6bf.onrender.com
+
+### Tech Stack
+- Next.js
+- React
+- Node.js
+- Express
+- PostgreSQL
+- Render
+- Vercel
+
+### Known Limitations
+- Render free tier may sleep after inactivity.
+- First request can take 30–60 seconds.
+- Google OAuth login is currently under configuration.
+
 
 ## 👩‍💻 Developer
 
