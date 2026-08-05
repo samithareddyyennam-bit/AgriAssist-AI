@@ -1,14 +1,12 @@
 import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
 import Footer from "../components/Footer";
-import ThemeToggle from "../components/ui/ThemeToggle";
 import Link from "next/link";
 
 export default function Home() {
 return ( <div> <Navbar />
 
 ```
-  <ThemeToggle />
 
   <Hero />
 
@@ -36,7 +34,7 @@ return ( <div> <Navbar />
             Get AI suggestions for the best crops based on soil and climate.
           </p>
 
-        <Link href="/crop">     
+        <Link href="/login">     
           <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
             Learn More
           </button>
@@ -61,7 +59,7 @@ return ( <div> <Navbar />
             Receive weather forecasts to improve farming decisions.
           </p>
 
-        <Link href="/weather">  
+        <Link href="/login">
           <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
             Learn More
           </button>
@@ -85,7 +83,7 @@ return ( <div> <Navbar />
           <p className="text-gray-600 dark:text-gray-300 mb-4">
             Identify crop diseases using AI-powered analysis.
           </p>
-        <Link href="/disease">
+        <Link href="/login">
           <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
             Learn More
           </button>

@@ -1,4 +1,4 @@
-import Button from "./ui/Button";
+import Link from "next/link";
 
 export default function Hero() {
   return (
@@ -12,6 +12,7 @@ export default function Hero() {
     >
       {/* Dark Overlay */}
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+
       {/* Content */}
       <div className="relative z-10 px-6 max-w-3xl">
         <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
@@ -23,9 +24,11 @@ export default function Hero() {
           suggestions, weather updates, and disease detection.
         </p>
 
-        <Button variant="primary" size="lg">
-          Get Started
-        </Button>
+        <Link href="/login">
+          <button className="bg-green-600 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-green-700 transition">
+            Get Started
+          </button>
+        </Link>
       </div>
     </section>
   );

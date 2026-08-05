@@ -29,9 +29,11 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="bg-gray-800 text-white px-4 py-2 rounded"
+      aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+      title={darkMode ? "Light mode" : "Dark mode"}
+      className="text-2xl hover:scale-110 transition-transform duration-200"
     >
-      {darkMode ? "☀️ Light Mode" : "🌙 Dark Mode"}
+      {darkMode ? "☀️" : "🌙"}
     </button>
   );
 }
