@@ -18,12 +18,19 @@ export async function middleware(req) {
 
 export const config = {
   matcher: [
+    "/dashboard",
     "/dashboard/:path*",
+    "/crop",
     "/crop/:path*",
+    "/weather",
     "/weather/:path*",
+    "/disease",
     "/disease/:path*",
+    "/ai",
     "/ai/:path*",
+    "/recommend",
     "/recommend/:path*",
+    "/profile",
     "/profile/:path*",
   ],
 };
