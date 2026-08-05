@@ -20,7 +20,7 @@ export default function CropPage() {
   // ==========================
   const fetchCrops = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/crops");
+      const res = await fetch(`${API_URL}/api/crops`);
       const data = await res.json();
 
       setCrops(data);
@@ -46,9 +46,8 @@ export default function CropPage() {
 
   try {
     const url = editingId
-      ? `http://localhost:5000/api/crops/${editingId}`
-      : "http://localhost:5000/api/crops";
-
+  ? `${API_URL}/api/crops/${editingId}`
+  : `${API_URL}/api/crops`;
     const method = editingId ? "PUT" : "POST";
 
     const res = await fetch(url, {
@@ -105,7 +104,7 @@ export default function CropPage() {
   const updateCrop = async () => {
     try {
       await fetch(
-        `http://localhost:5000/api/crops/${editingId}`,
+        `${API_URL}/api/crops/${editingId}`,
         {
           method: "PUT",
           headers: {
@@ -150,7 +149,7 @@ export default function CropPage() {
     try {
 
     const res = await fetch(
-      `http://localhost:5000/api/crops/${id}`,
+      `${API_URL}/api/crops/${id}`,
       {
         method: "DELETE",
       }

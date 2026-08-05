@@ -3,6 +3,16 @@
 import { signIn } from "next-auth/react";
 
 export default function LoginPage() {
+  const handleGoogleLogin = () => {
+    // Get the page the user originally wanted to visit
+    const params = new URLSearchParams(window.location.search);
+    const callbackUrl = params.get("callbackUrl") || "/dashboard";
+
+    signIn("google", {
+      callbackUrl,
+    });
+  };
+
   return (
     <div
       style={{
@@ -16,11 +26,7 @@ export default function LoginPage() {
       <h1>AgriAssist AI Login</h1>
 
       <button
-        onClick={() =>
-          signIn("google", {
-            callbackUrl: "/dashboard",
-          })
-        }
+        onClick={handleGoogleLogin}
         style={{
           padding: "15px 25px",
           fontSize: "18px",
