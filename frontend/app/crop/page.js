@@ -2,10 +2,14 @@
 
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import Navbar from "../../components/Navbar";
 
 export default function CropPage() {
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
   const [crops, setCrops] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
 
   const [name, setName] = useState("");
   const [soil, setSoil] = useState("");
@@ -15,307 +19,437 @@ export default function CropPage() {
 
   const [editingId, setEditingId] = useState(null);
 
-  // ==========================
-  // FETCH CROPS
-  // ==========================
-  const fetchCrops = async () => {
-    try {
-      const res = await fetch(`${API_URL}/api/crops`);
-      const data = await res.json();
+  // ==========================================
+  // CHECK API URL
+  // ==========================================
 
-      setCrops(data);
+  const checkAPI = () => {
+    if (!API_URL) {
+      toast.error("API URL is not configured");
+      console.error("NEXT_PUBLIC_API_URL is missing");
+      return false;
+    }
+
+    return true;
+  };
+
+  // ==========================================
+  // FETCH ALL CROPS
+  // ==========================================
+
+  const fetchCrops = async () => {
+    if (!checkAPI()) {
       setLoading(false);
-    } catch (err) {
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const response = await fetch(API_URL + "/api/crops");
+
+      const data = await response.json();
+
+      console.log("Crops API response:", data);
+
+      if (!response.ok) {
+        throw new Error(data.message || "Unable to fetch crops");
+      }
+
+      if (Array.isArray(data)) {
+        setCrops(data);
+      } else {
+        setCrops([]);
+      }
+    } catch (error) {
+      console.error("Fetch crops error:", error);
       toast.error("Unable to fetch crops");
+      setCrops([]);
+    } finally {
       setLoading(false);
     }
   };
+
+  // ==========================================
+  // LOAD CROPS
+  // ==========================================
 
   useEffect(() => {
     fetchCrops();
   }, []);
 
-  // ==========================
-  // ADD CROP
-  // ==========================
- const saveCrop = async () => {
-  if (!name || !soil || !season || !water || !fertilizer) {
-    toast.error("Please fill all fields");
-    return;
-  }
+  // ==========================================
+  // CLEAR FORM
+  // ==========================================
 
-  try {
-    const url = editingId
-  ? `${API_URL}/api/crops/${editingId}`
-  : `${API_URL}/api/crops`;
-    const method = editingId ? "PUT" : "POST";
-
-    const res = await fetch(url, {
-      method,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name,
-        soil,
-        season,
-        water,
-        fertilizer,
-      }),
-    });
-
-    if (!res.ok) {
-      toast.error("Operation failed");
-      return;
-    }
-
-    toast.success(editingId ? "Crop Updated!" : "Crop Added!");
-
-    setEditingId(null);
-
+  const clearForm = () => {
     setName("");
     setSoil("");
     setSeason("");
     setWater("");
     setFertilizer("");
-
-    fetchCrops();
-
-  } catch {
-    toast.error("Server Error");
-  }
-};
-  // ==========================
-  // EDIT
-  // ==========================
-  const editCrop = (crop) => {
-    setEditingId(crop.id);
-
-    setName(crop.name);
-    setSoil(crop.soil);
-    setSeason(crop.season);
-    setWater(crop.water);
-    setFertilizer(crop.fertilizer);
+    setEditingId(null);
   };
 
-  // ==========================
-  // UPDATE
-  // ==========================
-  const updateCrop = async () => {
-    try {
-      await fetch(
-        `${API_URL}/api/crops/${editingId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name,
-            soil,
-            season,
-            water,
-            fertilizer,
-          }),
-        }
-      );
+  // ==========================================
+  // ADD / UPDATE CROP
+  // ==========================================
 
-      toast.success("Crop Updated Successfully!");
-
-      setEditingId(null);
-
-      setName("");
-      setSoil("");
-      setSeason("");
-      setWater("");
-      setFertilizer("");
-
-      fetchCrops();
-    } catch {
-      toast.error("Update Failed");
-    }
-  };
-
-  // ==========================
-  // DELETE
-  // ==========================
-  const deleteCrop = async (id) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this crop?"
-    );
-
-    if (!confirmDelete) return;
-
-    try {
-
-    const res = await fetch(
-      `${API_URL}/api/crops/${id}`,
-      {
-        method: "DELETE",
-      }
-    );
-
-    if (!res.ok) {
-      toast.error("Unable to delete crop");
+  const saveCrop = async () => {
+    if (!checkAPI()) {
       return;
     }
 
-    toast.success("Crop deleted successfully!");
+    if (
+      !name.trim() ||
+      !soil.trim() ||
+      !season.trim() ||
+      !water.trim() ||
+      !fertilizer.trim()
+    ) {
+      toast.error("Please fill all fields");
+      return;
+    }
 
-    fetchCrops();
+    try {
+      setSaving(true);
 
-  } catch (err) {
-    toast.error("Server Error");
-  }
+      let url = API_URL + "/api/crops";
+      let method = "POST";
 
-};
+      if (editingId !== null) {
+        url = API_URL + "/api/crops/" + editingId;
+        method = "PUT";
+      }
+
+      console.log("Sending request:", method, url);
+
+      const response = await fetch(url, {
+        method: method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: name.trim(),
+          soil: soil.trim(),
+          season: season.trim(),
+          water: water.trim(),
+          fertilizer: fertilizer.trim(),
+        }),
+      });
+
+      const data = await response.json();
+
+      console.log("Save crop response:", data);
+
+      if (!response.ok) {
+        throw new Error(data.message || "Crop operation failed");
+      }
+
+      if (editingId !== null) {
+        toast.success("Crop updated successfully!");
+      } else {
+        toast.success("Crop added successfully!");
+      }
+
+      clearForm();
+
+      await fetchCrops();
+    } catch (error) {
+      console.error("Save crop error:", error);
+      toast.error(error.message || "Server error");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  // ==========================================
+  // EDIT CROP
+  // ==========================================
+
+  const editCrop = (crop) => {
+    setEditingId(crop.id);
+
+    setName(crop.name || "");
+    setSoil(crop.soil || "");
+    setSeason(crop.season || "");
+    setWater(crop.water || "");
+    setFertilizer(crop.fertilizer || "");
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  // ==========================================
+  // DELETE CROP
+  // ==========================================
+
+  const deleteCrop = async (id) => {
+    if (!checkAPI()) {
+      return;
+    }
+
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this crop?"
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        API_URL + "/api/crops/" + id,
+        {
+          method: "DELETE",
+        }
+      );
+
+      const data = await response.json();
+
+      console.log("Delete crop response:", data);
+
+      if (!response.ok) {
+        throw new Error(data.message || "Unable to delete crop");
+      }
+
+      toast.success("Crop deleted successfully!");
+
+      if (editingId === id) {
+        clearForm();
+      }
+
+      await fetchCrops();
+    } catch (error) {
+      console.error("Delete crop error:", error);
+      toast.error(error.message || "Server error");
+    }
+  };
+
+  // ==========================================
+  // LOADING SCREEN
+  // ==========================================
+
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen text-3xl">
-        Loading Crops...
-      </div>
+      <>
+        <Navbar />
+
+        <div className="min-h-screen bg-green-50 flex items-center justify-center">
+          <div className="text-center">
+            <div className="text-4xl mb-4">🌾</div>
+
+            <h2 className="text-2xl font-bold text-green-700">
+              Loading Crops...
+            </h2>
+
+            <p className="text-gray-500 mt-2">
+              Please wait
+            </p>
+          </div>
+        </div>
+      </>
     );
   }
 
+  // ==========================================
+  // MAIN PAGE
+  // ==========================================
+
   return (
-    <div className="min-h-screen bg-green-50 p-10">
+    <>
+      <Navbar />
 
-      <h1 className="text-4xl font-bold text-center text-green-700 mb-10">
-        🌾 Crop Management
-      </h1>
+      <main className="min-h-screen bg-green-50 p-6 md:p-10">
 
-      {/* Add / Update Form */}
+        {/* PAGE TITLE */}
 
-      <div className="bg-white rounded-xl shadow p-6 mb-10">
+        <div className="max-w-7xl mx-auto">
 
-        <h2 className="text-2xl font-bold mb-6">
-          {editingId ? "✏ Update Crop" : "➕ Add New Crop"}
-        </h2>
+          <h1 className="text-4xl font-bold text-center text-green-700 mb-10">
+            🌾 Crop Management
+          </h1>
 
-        <div className="grid md:grid-cols-2 gap-4">
+          {/* ADD / UPDATE FORM */}
 
-          <input
-            className="border p-3 rounded-lg"
-            placeholder="Crop Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
+          <div className="bg-white rounded-xl shadow-lg p-6 mb-10">
 
-          <input
-            className="border p-3 rounded-lg"
-            placeholder="Soil"
-            value={soil}
-            onChange={(e) => setSoil(e.target.value)}
-          />
+            <h2 className="text-2xl font-bold text-gray-800 mb-6">
+              {editingId !== null
+                ? "✏️ Update Crop"
+                : "➕ Add New Crop"}
+            </h2>
 
-          <input
-            className="border p-3 rounded-lg"
-            placeholder="Season"
-            value={season}
-            onChange={(e) => setSeason(e.target.value)}
-          />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-          <input
-            className="border p-3 rounded-lg"
-            placeholder="Water Requirement"
-            value={water}
-            onChange={(e) => setWater(e.target.value)}
-          />
+              {/* NAME */}
 
-          <input
-            className="border p-3 rounded-lg"
-            placeholder="Fertilizer"
-            value={fertilizer}
-            onChange={(e) => setFertilizer(e.target.value)}
-          />
+              <input
+                type="text"
+                placeholder="Crop Name"
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+                className="border border-gray-300 p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
 
-        </div>
+              {/* SOIL */}
 
-        <button
-          onClick={saveCrop}
-          className="mt-6 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg"
-        >
-          {editingId ? "Update Crop" : "Add Crop"}
-        </button>
+              <input
+                type="text"
+                placeholder="Soil Type"
+                value={soil}
+                onChange={(event) => setSoil(event.target.value)}
+                className="border border-gray-300 p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
 
-      </div>
+              {/* SEASON */}
 
-      {/* Empty State */}
+              <input
+                type="text"
+                placeholder="Season"
+                value={season}
+                onChange={(event) => setSeason(event.target.value)}
+                className="border border-gray-300 p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
 
-      {crops.length === 0 ? (
-        <div className="bg-white p-10 rounded-xl shadow text-center">
+              {/* WATER */}
 
-          <h2 className="text-2xl font-bold">
-            🌱 No Crops Available
-          </h2>
+              <input
+                type="text"
+                placeholder="Water Requirement"
+                value={water}
+                onChange={(event) => setWater(event.target.value)}
+                className="border border-gray-300 p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
 
-          <p className="text-gray-500 mt-3">
-            Add your first crop.
-          </p>
+              {/* FERTILIZER */}
 
-        </div>
-      ) : (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-          {crops.map((crop) => (
-
-            <div
-              key={crop.id}
-              className="bg-white rounded-xl shadow p-6"
-            >
-
-              <h2 className="text-2xl font-bold text-green-700">
-                {crop.name}
-              </h2>
-
-              <p className="mt-3">
-                <strong>Soil:</strong> {crop.soil}
-              </p>
-
-              <p>
-                <strong>Season:</strong> {crop.season}
-              </p>
-
-              <p>
-                <strong>Water:</strong> {crop.water}
-              </p>
-
-              <p>
-                <strong>Fertilizer:</strong> {crop.fertilizer}
-              </p>
-
-              <div className="flex gap-3 mt-6">
-
-                <button
-                  onClick={() => {
-    setEditingId(crop.id);
-    setName(crop.name);
-    setSoil(crop.soil);
-    setSeason(crop.season);
-    setWater(crop.water);
-    setFertilizer(crop.fertilizer);
-  }}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg"
-                >
-                  Edit
-                </button>
-
-                <button
-                  onClick={() => deleteCrop(crop.id)}
-                  className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg"
-                >
-                  Delete
-                </button>
-
-              </div>
+              <input
+                type="text"
+                placeholder="Fertilizer"
+                value={fertilizer}
+                onChange={(event) => setFertilizer(event.target.value)}
+                className="border border-gray-300 p-3 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
 
             </div>
 
-          ))}
+            {/* BUTTONS */}
+
+            <div className="flex gap-3 mt-6">
+
+              <button
+                onClick={saveCrop}
+                disabled={saving}
+                className="bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white px-6 py-3 rounded-lg font-semibold"
+              >
+                {saving
+                  ? "Saving..."
+                  : editingId !== null
+                  ? "Update Crop"
+                  : "Add Crop"}
+              </button>
+
+              {editingId !== null && (
+                <button
+                  onClick={clearForm}
+                  disabled={saving}
+                  className="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold"
+                >
+                  Cancel
+                </button>
+              )}
+
+            </div>
+
+          </div>
+
+          {/* CROPS LIST */}
+
+          {crops.length === 0 ? (
+            <div className="bg-white rounded-xl shadow-lg p-10 text-center">
+
+              <div className="text-5xl mb-4">
+                🌱
+              </div>
+
+              <h2 className="text-2xl font-bold text-gray-800">
+                No Crops Available
+              </h2>
+
+              <p className="text-gray-500 mt-2">
+                Add your first crop using the form above.
+              </p>
+
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+              {crops.map((crop) => (
+                <div
+                  key={crop.id}
+                  className="bg-white rounded-xl shadow-lg p-6"
+                >
+
+                  <h2 className="text-2xl font-bold text-green-700 mb-4">
+                    🌾 {crop.name}
+                  </h2>
+
+                  <div className="space-y-2 text-gray-700">
+
+                    <p>
+                      <strong>🌱 Soil:</strong>{" "}
+                      {crop.soil}
+                    </p>
+
+                    <p>
+                      <strong>📅 Season:</strong>{" "}
+                      {crop.season}
+                    </p>
+
+                    <p>
+                      <strong>💧 Water:</strong>{" "}
+                      {crop.water}
+                    </p>
+
+                    <p>
+                      <strong>🌿 Fertilizer:</strong>{" "}
+                      {crop.fertilizer}
+                    </p>
+
+                  </div>
+
+                  {/* ACTION BUTTONS */}
+
+                  <div className="flex gap-3 mt-6">
+
+                    <button
+                      onClick={() => editCrop(crop)}
+                      className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold"
+                    >
+                      Edit
+                    </button>
+
+                    <button
+                      onClick={() => deleteCrop(crop.id)}
+                      className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-semibold"
+                    >
+                      Delete
+                    </button>
+
+                  </div>
+
+                </div>
+              ))}
+
+            </div>
+          )}
 
         </div>
-      )}
 
-    </div>
+      </main>
+    </>
   );
 }
