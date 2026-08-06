@@ -1,12 +1,16 @@
 "use client";
 
 import { signIn } from "next-auth/react";
-import { useSearchParams } from "next/navigation";
 
 export default function LoginPage() {
-  const searchParams = useSearchParams();
+  const handleLogin = () => {
+    const params = new URLSearchParams(window.location.search);
+    const callbackUrl = params.get("callbackUrl") || "/dashboard";
 
-  const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
+    signIn("google", {
+      callbackUrl,
+    });
+  };
 
   return (
     <div
@@ -21,11 +25,7 @@ export default function LoginPage() {
       <h1>AgriAssist AI Login</h1>
 
       <button
-        onClick={() =>
-          signIn("google", {
-            callbackUrl,
-          })
-        }
+        onClick={handleLogin}
         style={{
           padding: "15px 25px",
           fontSize: "18px",
