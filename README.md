@@ -1,219 +1,553 @@
 # 🌾 AgriAssist AI
 
-AgriAssist AI is an AI-powered smart farming web application designed to help farmers make informed decisions. The application provides crop recommendations based on soil type and season, weather information, disease detection, and a modern dashboard for better farm management.
+AgriAssist AI is a full-stack smart farming assistant that helps farmers manage crop information and make better farming decisions through crop recommendations and agricultural features.
+
+## 🚀 Live Demo
+
+**Live Application:**
+https://agri-assist-ai-m4zz.vercel.app
+
+**GitHub Repository:**
+https://github.com/samithareddyyennam-bit/AgriAssist-AI
 
 ---
 
-## 🚀 Features
+## 📸 Screenshots
 
-- 🌾 AI Crop Recommendation
-- 🌤 Real-time Weather Forecast
-- 🦠 Disease Detection
-- 📊 Interactive Dashboard
-- 🌱 Smart Farming Tips
-- 🔍 Search Crops
-- ➕ Add New Crops
-- ✏ Update Crop Information
-- 🗑 Delete Crop Records
-- 💾 Persistent Database Storage using Supabase
-- 🌙 Dark Mode Support
-- ⚡ Responsive Design
-- 🔔 Toast Notifications
-- 📞 Contact Page
+### Login / Home
 
+![Login and Home](screenshots/01_Login.png)
 
----
+### Dashboard
 
-## 🛠 Technologies Used
+![Dashboard](screenshots/02_Dashboard.png)
 
-## Frontend
-- HTML5
-- CSS3
-- JavaScript
+### Crop Management
 
-## Backend
-- Node.js
-- Express.js
+![Crop Management](screenshots/03_Crop_Management.png)
 
-## Database
-- PostgreSQL
-- Supabase
+### AI Crop Recommendation
 
-## APIs
-- OpenWeather API
+![Crop Recommendation](screenshots/04_Crop_Recommendation.png)
 
 ---
 
-## 📂 Project Structure
+## ✨ Features
 
-```
-AgriAssist-AI
+* 🔐 Google authentication and secure login using NextAuth
+* 📊 Personalized dashboard after login
+* 🌾 Crop management with Add, View, Edit and Delete operations
+* 🌱 Crop recommendation based on soil type and season
+* 🌤️ Weather and agricultural information
+* 🤖 AI-assisted crop recommendation feature
+* 🩺 Agricultural disease-related feature
+* 👤 User profile page
+* 🌗 Responsive user interface with theme support
+* 📱 Responsive design for desktop and mobile devices
+* 🔗 Full-stack communication between frontend and backend APIs
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+
+* Next.js
+* React
+* JavaScript
+* Tailwind CSS
+* NextAuth.js
+* React Hot Toast
+
+### Backend
+
+* Node.js
+* Express.js
+* REST APIs
+
+### Database
+
+* PostgreSQL
+
+### Authentication
+
+* NextAuth.js
+* Google OAuth
+
+### AI / Recommendation
+
+* Crop recommendation based on agricultural inputs such as soil type and season
+* Backend data-driven recommendation logic
+
+### Deployment
+
+* **Frontend:** Vercel
+* **Backend:** Render
+* **Database:** PostgreSQL
+
+---
+
+## 📁 Project Structure
+
+```text
+AgriAssist-AI/
 │
-├── frontend
-│   ├── app
-│   ├── components
-│   ├── public
-│   └── package.json
-│
-├── backend
-│   ├── config
-│   │   └── db.js
-│   ├── routes
-│   │   ├── cropRoutes.js
-│   │   ├── weatherRoutes.js
-│   │   ├── diseaseRoutes.js
-│   │   └── authRoutes.js
-│   ├── server.js
+├── frontend/
+│   ├── app/
+│   │   ├── about/
+│   │   ├── ai/
+│   │   ├── api/
+│   │   │   └── auth/
+│   │   ├── contact/
+│   │   ├── crop/
+│   │   ├── dashboard/
+│   │   ├── disease/
+│   │   ├── login/
+│   │   ├── profile/
+│   │   ├── recommend/
+│   │   ├── weather/
+│   │   ├── globals.css
+│   │   ├── layout.js
+│   │   └── providers.js
+│   │
+│   ├── components/
+│   │   ├── Navbar.js
+│   │   └── ui/
+│   │
+│   ├── middleware.js
 │   ├── package.json
-│   ├── .env
-│   └── .env.example
+│   └── .env.local
+│
+├── backend/
+│   ├── routes/
+│   │   └── crops.js
+│   ├── config/
+│   │   └── db.js
+│   ├── server.js
+│   └── package.json
 │
 └── README.md
 ```
 
+> File extensions may vary between `.js` and `.jsx` depending on the component.
+
 ---
 
-## ⚙ Installation
+## ⚙️ Setup Instructions
 
-### Clone the Repository
-
-```bash
-
-```
-
-### Backend
+### 1. Clone the repository
 
 ```bash
-cd backend
-npm install
-npm run dev
+git clone https://github.com/samithareddyyennam-bit/AgriAssist-AI.git
 ```
 
-### Frontend
+Move into the project:
+
+```bash
+cd AgriAssist-AI
+```
+
+---
+
+### 2. Setup the frontend
 
 ```bash
 cd frontend
+```
+
+Install dependencies:
+
+```bash
 npm install
+```
+
+Create a `.env.local` file inside the `frontend` folder.
+
+Add:
+
+```env
+NEXT_PUBLIC_API_URL=YOUR_BACKEND_URL
+
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=YOUR_NEXTAUTH_SECRET
+
+GOOGLE_CLIENT_ID=YOUR_GOOGLE_CLIENT_ID
+GOOGLE_CLIENT_SECRET=YOUR_GOOGLE_CLIENT_SECRET
+```
+
+For the deployed application, `NEXT_PUBLIC_API_URL` points to the deployed Render backend.
+
+---
+
+### 3. Setup the backend
+
+Open another terminal and move to the backend directory:
+
+```bash
+cd backend
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Configure the PostgreSQL database and the environment variables required by the backend database configuration.
+
+Make sure the PostgreSQL database contains the required `crops` table.
+
+---
+
+### 4. Start the backend
+
+Run:
+
+```bash
+npm start
+```
+
+The backend will run on the configured server port.
+
+---
+
+### 5. Start the frontend
+
+Inside the `frontend` directory:
+
+```bash
 npm run dev
 ```
 
----
+Open:
 
-# 🔐 Environment Variables
-
-Create a `.env` file inside the backend folder.
-
-```
-PORT=5000
-
-DATABASE_URL=your_supabase_database_url
-
-WEATHER_API_KEY=your_weather_api_key
-```
-
-Create a `.env.example` file with placeholder values before pushing your project to GitHub.
-
-
-## 🌐 Local URLs
-
-Frontend
-
-```
+```text
 http://localhost:3000
 ```
 
-Backend
+---
 
+## 🔐 Environment Variables
+
+### Frontend
+
+```env
+NEXT_PUBLIC_API_URL=YOUR_BACKEND_URL
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=YOUR_SECRET
+GOOGLE_CLIENT_ID=YOUR_GOOGLE_CLIENT_ID
+GOOGLE_CLIENT_SECRET=YOUR_GOOGLE_CLIENT_SECRET
 ```
-http://localhost:5000
+
+### Production
+
+The deployed frontend uses the production backend URL through:
+
+```env
+NEXT_PUBLIC_API_URL=https://agriassist-ai-t6bf.onrender.com
+```
+
+> Never commit `.env.local`, API secrets, OAuth secrets, database passwords, or other sensitive credentials to GitHub.
+
+---
+
+# 📡 API Documentation
+
+The backend exposes REST APIs for crop management and recommendations.
+
+## Get all crops
+
+**GET**
+
+```text
+/api/crops
+```
+
+Example:
+
+```text
+GET /api/crops
+```
+
+Response:
+
+```json
+[
+  {
+    "id": 1,
+    "name": "Rice",
+    "soil": "Black Soil",
+    "season": "Kharif",
+    "water": "High",
+    "fertilizer": "Nitrogen"
+  }
+]
 ```
 
 ---
 
-## 📷 Screenshots
+## Search crops
 
-- 🏠 Home Page
-- 📊 Dashboard
-- 🌾 Crop Recommendation
-- 🌤 Weather Page
-- 🦠 Disease Detection
-- ➕ Add Crop
-- ✏ Update Crop
-- 🗑 Delete Crop
+**GET**
 
+```text
+/api/crops/search?q=rice
+```
 
-(Add screenshots after uploading them.)
+Example response:
 
----
-
-# 🗄 Database
-
-This project uses **PostgreSQL** hosted on **Supabase**.
-
-### Why Supabase?
-
-- Free cloud PostgreSQL database
-- Reliable and secure
-- Persistent cloud storage
-- Easy integration with Node.js
-- Supports full CRUD operations
-
-# 📊 Database Schema
-
-### Table: `crops`
-
-| Column | Type | Description |
-|---------|------|-------------|
-| id | Integer (Primary Key) | Crop ID |
-| name | Text | Crop Name |
-| soil | Text | Soil Type |
-| season | Text | Growing Season |
-| water | Text | Water Requirement |
-| fertilizer | Text | Recommended Fertilizer |
-![Database Schema](images/schema.png)
-
-# 🔄 CRUD Operations
-
-The application supports complete CRUD operations.
-
-- ✅ Create – Add new crops
-- ✅ Read – Display crop information
-- ✅ Update – Modify crop details
-- ✅ Delete – Remove crop records
-
-All data is stored permanently in the Supabase PostgreSQL database.
-
-## Live Deployment
-
-Frontend:
-https://agri-assist-ai-self.vercel.app
-
-Backend:
-https://agriassist-ai-t6bf.onrender.com
-
-### Tech Stack
-- Next.js
-- React
-- Node.js
-- Express
-- PostgreSQL
-- Render
-- Vercel
-
-### Known Limitations
-- Render free tier may sleep after inactivity.
-- First request can take 30–60 seconds.
-- Google OAuth login is currently under configuration.
-
-
-## 👩‍💻 Developer
-
-**Samitha Reddy**
-AI-Assisted Full Stack Web Development Intern
+```json
+[
+  {
+    "id": 1,
+    "name": "Rice",
+    "soil": "Black Soil",
+    "season": "Kharif"
+  }
+]
+```
 
 ---
 
-## 📄 License
+## Crop Recommendation
 
-This project is developed for educational and internship purposes.
+**GET**
 
+```text
+/api/crops/recommend?soil=Black%20Soil&season=Kharif
+```
+
+Example:
+
+```text
+GET /api/crops/recommend?soil=Black%20Soil&season=Kharif
+```
+
+Successful response:
+
+```json
+{
+  "id": 1,
+  "name": "Rice",
+  "soil": "Black Soil",
+  "season": "Kharif",
+  "water": "High",
+  "fertilizer": "Nitrogen"
+}
+```
+
+If no matching crop is found:
+
+```json
+{
+  "message": "No crop found"
+}
+```
+
+---
+
+## Add Crop
+
+**POST**
+
+```text
+/api/crops
+```
+
+Request:
+
+```json
+{
+  "name": "Rice",
+  "soil": "Black Soil",
+  "season": "Kharif",
+  "water": "High",
+  "fertilizer": "Nitrogen"
+}
+```
+
+---
+
+## Update Crop
+
+**PUT**
+
+```text
+/api/crops/:id
+```
+
+Example:
+
+```text
+PUT /api/crops/1
+```
+
+Request:
+
+```json
+{
+  "name": "Rice",
+  "soil": "Black Soil",
+  "season": "Kharif",
+  "water": "High",
+  "fertilizer": "Nitrogen"
+}
+```
+
+---
+
+## Delete Crop
+
+**DELETE**
+
+```text
+/api/crops/:id
+```
+
+Example:
+
+```text
+DELETE /api/crops/1
+```
+
+Successful response:
+
+```json
+{
+  "message": "Crop deleted successfully!"
+}
+```
+
+---
+
+## Get Crop by ID
+
+**GET**
+
+```text
+/api/crops/:id
+```
+
+Example:
+
+```text
+GET /api/crops/1
+```
+
+---
+
+# 🏗️ Architecture
+
+AgriAssist AI follows a three-layer full-stack architecture.
+
+```text
+                ┌──────────────────────┐
+                │      User / Browser  │
+                └──────────┬───────────┘
+                           │
+                           ▼
+                ┌──────────────────────┐
+                │ Next.js Frontend     │
+                │ React + Tailwind CSS │
+                │ NextAuth             │
+                └──────────┬───────────┘
+                           │ REST API
+                           ▼
+                ┌──────────────────────┐
+                │ Express.js Backend   │
+                │ Node.js REST APIs    │
+                └──────────┬───────────┘
+                           │
+                           ▼
+                ┌──────────────────────┐
+                │ PostgreSQL Database  │
+                │ Crop Information     │
+                └──────────────────────┘
+```
+
+### Deployment Architecture
+
+```text
+User
+ │
+ ▼
+Vercel
+ │
+ │ API Requests
+ ▼
+Render
+ │
+ ▼
+PostgreSQL
+```
+
+---
+
+# ⚠️ Known Limitations
+
+* Some agricultural recommendations depend on the crop information available in the database.
+* Recommendation results are currently based on soil and season matching.
+* Some advanced AI functionality is planned for future improvements.
+* Free-tier hosting services may experience cold starts or slower response times.
+* Weather and other external services may depend on their respective APIs and availability.
+* The application is intended as an assistance tool and should not replace professional agricultural advice.
+
+---
+
+# 📚 Learning Outcomes
+
+During the development of AgriAssist AI, I gained practical experience in:
+
+* Building a full-stack web application
+* Developing React and Next.js interfaces
+* Creating REST APIs using Express.js
+* Connecting applications with PostgreSQL
+* Implementing Google authentication using NextAuth
+* Managing frontend and backend communication
+* Deploying applications using Vercel and Render
+* Debugging production deployment issues
+* Working with environment variables
+* Building CRUD functionality
+* Creating responsive user interfaces
+* Documenting a complete software project
+
+---
+
+# 🙏 Credits & Acknowledgements
+
+This project was developed as part of the **TBI-GEU Summer Internship Program**.
+
+I would like to thank the internship mentors and program team for providing guidance, resources, and the opportunity to work on a full-stack project.
+
+### Tools and Resources Used
+
+* Next.js Documentation
+* React Documentation
+* Express.js Documentation
+* PostgreSQL Documentation
+* NextAuth Documentation
+* Tailwind CSS Documentation
+* Vercel Documentation
+* Render Documentation
+* GitHub Documentation
+
+AI-assisted development tools were also used during development for debugging, learning, code suggestions, and improving the application.
+
+---
+
+# 👩‍💻 Developer
+
+**Yennam Samitha Reddy**
+
+B.Tech — Artificial Intelligence & Machine Learning
+
+GitHub:
+https://github.com/samithareddyyennam-bit
+
+---
+
+## 📌 Project Status
+
+**Status:** Completed — Internship Capstone Project
+
+AgriAssist AI demonstrates a complete full-stack application with authentication, dashboard functionality, crop management, agricultural recommendation features, REST APIs, database integration, and cloud deployment.
