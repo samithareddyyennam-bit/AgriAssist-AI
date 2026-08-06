@@ -9,7 +9,12 @@ export async function middleware(req) {
 
   if (!token) {
     const loginUrl = new URL("/login", req.url);
-    loginUrl.searchParams.set("callbackUrl", req.nextUrl.pathname);
+
+    loginUrl.searchParams.set(
+      "callbackUrl",
+      req.nextUrl.pathname
+    );
+
     return NextResponse.redirect(loginUrl);
   }
 
@@ -18,19 +23,12 @@ export async function middleware(req) {
 
 export const config = {
   matcher: [
-    "/dashboard",
     "/dashboard/:path*",
-    "/crop",
     "/crop/:path*",
-    "/weather",
     "/weather/:path*",
-    "/disease",
     "/disease/:path*",
-    "/ai",
     "/ai/:path*",
-    "/recommend",
     "/recommend/:path*",
-    "/profile",
     "/profile/:path*",
   ],
 };

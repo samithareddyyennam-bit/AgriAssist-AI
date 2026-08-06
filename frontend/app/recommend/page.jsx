@@ -1,37 +1,15 @@
-const handleSearch = async () => {
-  try {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+"use client";
 
-    if (!apiUrl) {
-      alert("API URL is not configured");
-      return;
-    }
+export default function RecommendPage() {
+  return (
+    <div className="min-h-screen bg-green-50 p-10">
+      <h1 className="text-4xl font-bold text-center text-green-700">
+        🌱 AI Crop Recommendation
+      </h1>
 
-    const url = `${apiUrl}/api/crops/recommend?soil=${encodeURIComponent(
-      soil
-    )}&season=${encodeURIComponent(season)}`;
-
-    const res = await fetch(url);
-    const data = await res.json();
-
-    console.log("API Response:", data);
-
-    if (!res.ok) {
-      alert(data.message || data.error || "Recommendation failed");
-      setResult([]);
-      return;
-    }
-
-    // Backend returns a single crop object
-    if (data && data.name) {
-      setResult([data]);
-    } else {
-      alert("No crop recommendation found");
-      setResult([]);
-    }
-  } catch (err) {
-    console.error("Recommendation error:", err);
-    alert("Unable to connect to backend server");
-    setResult([]);
-  }
-};
+      <p className="text-center mt-6 text-gray-700">
+        Recommend page is working.
+      </p>
+    </div>
+  );
+}

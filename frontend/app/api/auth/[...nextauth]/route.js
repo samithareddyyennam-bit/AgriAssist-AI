@@ -13,17 +13,16 @@ const handler = NextAuth({
 
   callbacks: {
     async redirect({ url, baseUrl }) {
-      // Allow relative callback URLs such as /crop, /weather, /recommend
+      // Allow relative URLs such as /recommend, /crop, /weather
       if (url.startsWith("/")) {
         return `${baseUrl}${url}`;
       }
 
-      // Allow URLs belonging to this deployed application
+      // Allow URLs belonging to this application
       if (url.startsWith(baseUrl)) {
         return url;
       }
 
-      // Safety fallback
       return `${baseUrl}/dashboard`;
     },
   },
