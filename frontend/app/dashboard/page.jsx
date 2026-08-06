@@ -2,18 +2,24 @@
 
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import Navbar from "../../components/Navbar";
 
 export default function Dashboard() {
   const { data: session, status } = useSession();
-
   const [dashboard, setDashboard] = useState(null);
 
   useEffect(() => {
     if (session) {
       fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/dashboard`)
         .then((res) => res.json())
-        .then((data) => setDashboard(data));
+        .then((data) => {
+          console.log("Dashboard API:", data);
+          setDashboard(data);
+        })
+        .catch((err) => {
+          console.error("Dashboard error:", err);
+        });
     }
   }, [session]);
 
@@ -45,11 +51,11 @@ export default function Dashboard() {
 
         <div className="bg-white rounded-xl shadow p-6 mb-10">
           <h2 className="text-2xl font-bold">
-            Welcome {session.user.name}
+            Welcome {session.user?.name}
           </h2>
 
           <p className="text-gray-600">
-            {session.user.email}
+            {session.user?.email}
           </p>
         </div>
 
@@ -57,41 +63,89 @@ export default function Dashboard() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
 
             <div className="bg-white rounded-xl shadow p-6">
-              <h2 className="font-bold text-xl">🌤 Weather</h2>
-              <p className="mt-3 text-2xl">{dashboard.weather}</p>
+              <h2 className="font-bold text-xl">
+                🌤 Weather
+              </h2>
+
+              <p className="mt-3 text-2xl">
+                {dashboard.weather}
+              </p>
+
+              <Link
+                href="/weather"
+                className="inline-block mt-4 bg-green-600 text-white px-4 py-2 rounded-lg"
+              >
+                Open Weather
+              </Link>
             </div>
 
             <div className="bg-white rounded-xl shadow p-6">
-              <h2 className="font-bold text-xl">🌡 Temperature</h2>
-              <p className="mt-3 text-2xl">{dashboard.temperature}</p>
+              <h2 className="font-bold text-xl">
+                🌡 Temperature
+              </h2>
+
+              <p className="mt-3 text-2xl">
+                {dashboard.temperature}
+              </p>
             </div>
 
             <div className="bg-white rounded-xl shadow p-6">
-              <h2 className="font-bold text-xl">🌾 Recommended Crop</h2>
-              <p className="mt-3 text-2xl">{dashboard.crop}</p>
+              <h2 className="font-bold text-xl">
+                🌾 Recommended Crop
+              </h2>
+
+              <p className="mt-3 text-2xl">
+                {dashboard.crop}
+              </p>
+
+              <Link
+                href="/recommend"
+                className="inline-block mt-4 bg-green-600 text-white px-4 py-2 rounded-lg"
+              >
+                Recommend Crop
+              </Link>
             </div>
 
             <div className="bg-white rounded-xl shadow p-6">
-              <h2 className="font-bold text-xl">🌱 Soil Type</h2>
-              <p className="mt-3 text-2xl">{dashboard.soil}</p>
+              <h2 className="font-bold text-xl">
+                🌱 Soil Type
+              </h2>
+
+              <p className="mt-3 text-2xl">
+                {dashboard.soil}
+              </p>
+
+              <Link
+                href="/crop"
+                className="inline-block mt-4 bg-green-600 text-white px-4 py-2 rounded-lg"
+              >
+                Manage Crops
+              </Link>
             </div>
 
             <div className="bg-white rounded-xl shadow p-6">
-              <h2 className="font-bold text-xl">📅 Season</h2>
-              <p className="mt-3 text-2xl">{dashboard.season}</p>
+              <h2 className="font-bold text-xl">
+                📅 Season
+              </h2>
+
+              <p className="mt-3 text-2xl">
+                {dashboard.season}
+              </p>
             </div>
 
-            <div className="bg-green-600 text-white rounded-xl shadow p-6 flex flex-col justify-center">
+            <div className="bg-green-600 text-white rounded-xl shadow p-6">
+
               <h2 className="font-bold text-xl">
                 🤖 AI Crop Advisor
               </h2>
 
               <Link
-  href="/ai"
-  className="mt-4 bg-white text-green-700 text-center py-2 rounded-lg font-semibold hover:bg-green-100"
->
-  Open AI Assistant
-</Link>
+                href="/ai"
+                className="inline-block mt-4 bg-white text-green-700 px-4 py-2 rounded-lg"
+              >
+                Open AI Assistant
+              </Link>
+
             </div>
 
           </div>
