@@ -51,11 +51,20 @@ router.get("/search", async (req, res) => {
 // ==============================
 router.get("/recommend", async (req, res) => {
   try {
-
     const { soil, season } = req.query;
 
+    if (!soil || !season) {
+      return res.status(400).json({
+        message: "Soil and season are required",
+      });
+    }
+
     const result = await pool.query(
-      "SELECT * FROM crops WHERE soil=$1 AND season=$2 LIMIT 1",
+      `SELECT *
+       FROM crops
+       WHERE LOWER(TRIM(soil)) = LOWER(TRIM($1))
+       AND LOWER(TRIM(season)) = LOWER(TRIM($2))
+       LIMIT 1`,
       [soil, season]
     );
 
@@ -68,13 +77,11 @@ router.get("/recommend", async (req, res) => {
     res.json(result.rows[0]);
 
   } catch (err) {
-
     console.log(err);
 
     res.status(500).json({
       message: "Recommendation failed",
     });
-
   }
 });
 
